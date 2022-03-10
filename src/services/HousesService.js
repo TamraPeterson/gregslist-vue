@@ -21,6 +21,12 @@ class HousesService {
     AppState.houses.push(res.data)
     return res.data
   }
+
+  async editHouse(houseData) {
+    const res = await api.put('api/houses/' + houseData.id, houseData)
+    logger.log('update house', res.data)
+    AppState.activeHouse = res.data
+  }
 }
 
 export const housesService = new HousesService()

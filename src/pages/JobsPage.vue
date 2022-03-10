@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <b
-      title="Create House"
+      title="Create Job"
       class="
         create-btn
         btn btn-success
@@ -17,13 +17,13 @@
       <i class="mdi mdi-plus"></i>
     </b>
     <div class="row">
-      <div class="col-3" v-for="h in houses" :key="h.id">
-        <House :house="h" />
+      <div class="col-3 p-2 jobs" v-for="j in jobs" :key="j.id">
+        <Job :job="j" />
       </div>
     </div>
     <Modal>
-      <template #modal-title>Create House</template>
-      <template #modal-body><HouseForm /></template>
+      <template #modal-title>Create Job</template>
+      <template #modal-body><JobForm /></template>
     </Modal>
   </div>
 </template>
@@ -31,22 +31,23 @@
 
 <script>
 import { computed, onMounted } from "@vue/runtime-core";
-import { logger } from "../utils/Logger";
-import { housesService } from "../services/HousesService";
 import { AppState } from "../AppState";
+import { jobsService } from "../services/JobsService";
+import { logger } from "../utils/Logger";
+import Job from "../components/Job.vue";
 
 export default {
   setup() {
     onMounted(async () => {
       try {
-        await housesService.getAll();
+        await jobsService.getAll();
       } catch (error) {
-        logger.log(error);
+        logger.error(error);
       }
     });
 
     return {
-      houses: computed(() => AppState.houses),
+      jobs: computed(() => AppState.jobs),
     };
   },
 };

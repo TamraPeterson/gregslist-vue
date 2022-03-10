@@ -1,6 +1,6 @@
 <template>
   <router-link :to="{ name: 'HouseDetails', params: { id: house.id } }">
-    <div class="text-center">
+    <div class="text-center selectable">
       <img class="img-fluid img" :src="house.imgUrl" alt="" />
       <h5>${{ house.price }}</h5>
       <h6>{{ house.bedrooms }} bedrooms | {{ house.bathrooms }} bathrooms</h6>

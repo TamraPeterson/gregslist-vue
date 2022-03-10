@@ -1,64 +1,51 @@
 <template>
   <form>
     <div class="form-group">
-      <label for="bedrooms" class="">Bedrooms:</label>
+      <label for="company" class="">Company:</label>
       <input
-        v-model="editable.bedrooms"
-        placeholder="Bedrooms"
+        v-model="editable.company"
+        placeholder="Company"
         type="text"
         class="form-control"
-        name="bedrooms"
-        id="bedrooms"
+        name="company"
+        id="company"
         required
       />
     </div>
     <div class="form-group">
-      <label for="bathrooms" class="">Bathrooms:</label>
+      <label for="jobTitle" class="">Job Title:</label>
       <input
-        v-model="editable.bathrooms"
-        placeholder="Bathrooms"
+        v-model="editable.jobTitle"
+        placeholder="Job Title"
         type="text"
         class="form-control"
-        name="bathrooms"
-        id="bathrooms"
+        name="jobTitle"
+        id="jobTitle"
         required
       />
     </div>
     <div class="form-group">
-      <label for="price" class="">Price:</label>
+      <label for="rate" class="">Pay Rate:</label>
       <input
-        v-model="editable.price"
-        placeholder="Price"
+        v-model="editable.rate"
+        placeholder="Pay Rate"
         type="number"
         class="form-control"
-        name="price"
-        id="price"
+        name="rate"
+        id="rate"
         min="0"
         max="9999999"
       />
     </div>
     <div class="form-group">
-      <label for="year" class="">Year Built:</label>
+      <label for="hours" class="">Hours:</label>
       <input
-        v-model="editable.year"
-        placeholder="Year"
+        v-model="editable.hours"
+        placeholder="Hours"
         type="number"
         class="form-control"
-        name="year"
-        id="year"
-        min="0"
-        max="9999999"
-      />
-    </div>
-    <div class="form-group">
-      <label for="levels" class="">Levels:</label>
-      <input
-        v-model="editable.levels"
-        placeholder="Levels"
-        type="number"
-        class="form-control"
-        name="levels"
-        id="levels"
+        name="hours"
+        id="hours"
         min="0"
         max="9999999"
       />
@@ -75,18 +62,7 @@
         rows="5"
       ></textarea>
     </div>
-    <div class="form-group">
-      <label for="img" class="">img:</label>
-      <input
-        v-model="editable.imgUrl"
-        placeholder="https://imgurl.com"
-        type="url"
-        class="form-control"
-        name="img"
-        id="img"
-        required
-      />
-    </div>
+
     <div class="d-flex justify-content-between my-3">
       <button
         type="button"
@@ -97,20 +73,20 @@
         <b> cancel </b>
       </button>
       <button
-        v-if="!houseData.id"
-        @click="createHouse"
+        v-if="!jobData.id"
+        @click="createJob"
         type="button"
         class="btn btn-success text-dark text-uppercase selectable"
       >
-        <b> Create House </b>
+        <b> Create Job </b>
       </button>
       <button
         v-else
-        @click="editHouse"
+        @click="editJob"
         type="button"
         class="btn btn-info text-warning text-uppercase selectable"
       >
-        <b> Edit House </b>
+        <b> Edit Job </b>
       </button>
     </div>
   </form>
@@ -118,14 +94,14 @@
 
 
 <script>
-import { ref, watchEffect } from "vue";
+import { ref } from "@vue/reactivity";
+import { watchEffect } from "@vue/runtime-core";
 import { logger } from "../utils/Logger";
-import { housesService } from "../services/HousesService";
+import { jobsService } from "../services/JobsService";
 import { Modal } from "bootstrap";
-
 export default {
   props: {
-    houseData: {
+    jobData: {
       type: Object,
       required: false,
       default: {},
@@ -134,26 +110,15 @@ export default {
   setup(props) {
     const editable = ref({});
     watchEffect(() => {
-      logger.log("watch effect edit");
-      editable.value = props.houseData;
+      logger.log("watch effect job edit");
+      editable.value = props.jobData;
     });
     return {
       editable,
-      async createHouse() {
+      async createJob() {
         try {
-          await housesService.createHouse(editable.value);
+          await jobsService.createJob(editable.value);
           editable.value = {};
-          Modal.getOrCreateInstance(
-            document.getElementById("form-modal")
-          ).hide();
-        } catch (error) {
-          logger.error(error);
-        }
-      },
-
-      async editHouse() {
-        try {
-          await housesService.editHouse(editable.value);
           Modal.getOrCreateInstance(
             document.getElementById("form-modal")
           ).hide();
